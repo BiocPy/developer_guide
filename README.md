@@ -1,10 +1,10 @@
 # Developer Guide
 
-So you contribute or add a new package to [BiocPy](https://github.com/biocpy)? We'll use this repository to document our development process to maintain consistency across projects.
+So you want to contribute or add a new package to [BiocPy](https://github.com/biocpy)? We'll use this repository to document our development setup, to maintain consistency across projects.
 
-We should be consistent within the package for documentation and code style, and consistent across packages for testing and publishing.
+Following the zen of Python, we should be consistent within the package wrt documentation and code style, and consistent across packages for testing and publishing.
 
-- Following Google style guide - https://google.github.io/styleguide/pyguide.html
+- Follow Google style guide - https://google.github.io/styleguide/pyguide.html
 - For naming conventions, checkout https://google.github.io/styleguide/pyguide.html#3164-guidelines-derived-from-guidos-recommendations
 
 ## Setup
@@ -23,7 +23,7 @@ putup <NEW_PACKAGE_NAME> --markdown --pre-commit
 
 You should now have the basic package setup for you.
 
-pyscaffold uses tox to run isolated environments to run, test, document and publish the packages, might be a good time to familiarize yourself with available [tox commands](https://pyscaffold.org/en/stable/features.html#pre-commit-hooks). **_you rarely would want to add or modify the default tox.ini file._**
+pyscaffold uses `tox`, to create isolated environments for tests, documentation and to publish the packages. This might be a good time to familiarize yourself with available [tox commands](https://pyscaffold.org/en/stable/features.html#pre-commit-hooks). **_you rarely would want to add or modify the default tox.ini file._**
 
 ### Update linter, styler configuration
 
