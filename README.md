@@ -27,7 +27,7 @@ pyscaffold uses `tox`, to create isolated environments for tests, documentation 
 
 ### Update linter, styler configuration
 
-I use line length of 100, but thats a personal choice if you want to stick to the default 88.
+I use line length of 120, but thats a personal choice if you want to stick to the default 88.
 
 #### ruff
 
@@ -37,53 +37,27 @@ Add this to the end of the `pyproject.toml` file.
 
 ```toml
 [tool.ruff]
-line-length = 100
+line-length = 120
 src = ["src"]
+exclude = ["tests"]
+extend-ignore = ["F821"]
 
 [tool.ruff.pydocstyle]
 convention = "google"
 
 [tool.ruff.per-file-ignores]
 "__init__.py" = ["E402", "F401"]
-```
-
-#### flake8
-
-If you are using both flake and ruff, make these changes in the setup.cfg: Update `max_line_length` & add `per_file_ignores`.
-
-```toml
-[flake8]
-# Some sane defaults for the code style checker flake8
-max_line_length = 100
-extend_ignore = E203, W503
-# ^  Black-compatible
-#    E203 and W503 have edge cases handled by black
-exclude =
-    .tox
-    build
-    dist
-    .eggs
-    docs/conf.py
-per-file-ignores = __init__.py:F401
-```
-
-#### isort and black
-
-Add this to the end of the `pyproject.toml` file.
-
-```toml
-[tool.isort]
-profile = "black"
-known_first_party = "biocframe"
-skip = ["__init__.py"]
 
 [tool.black]
 force-exclude = "__init__.py"
+
 ```
 
 #### pre-commit
 
-If you are using pre-commits, you might need to run an extra step document [here](https://pyscaffold.org/en/stable/features.html#pre-commit-hooks). Checkout my [pre-commit config](./pre-commit-template.yml)
+If you are using pre-commits, you might need to run an extra step document [here](https://pyscaffold.org/en/stable/features.html#pre-commit-hooks). Checkout my [pre-commit config](./pre-commit-template.yml).
+
+[Pre-commit bot](https://pre-commit.ci/) is enabled on all BiocPy packages, to bring some consistency to code quality and documentation.
 
 ## Sphinx
 
