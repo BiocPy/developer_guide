@@ -1,39 +1,37 @@
-# Developer Guide
+# Developer Guide: Contributing and Adding Packages to BiocPy
 
-So you want to contribute or add a new package to [BiocPy](https://github.com/biocpy)? We'll use this repository to document our development setup, to maintain consistency across projects.
+Welcome to the Developer Guide for contributing to BiocPy and/or adding new packages. This repository provides guidance on the developer tools we employ to ensure code quality and consistency across all our projects.
 
-Following the zen of Python, we should be consistent within the package wrt documentation and code style, and consistent across packages for testing and publishing.
+**Maintaining Consistency:**
+When working within a package, it's essential to maintain consistency in both documentation and code style. This document outlines key practices.
 
-- Follow Google style guide - https://google.github.io/styleguide/pyguide.html
-- For naming conventions, checkout https://google.github.io/styleguide/pyguide.html#3164-guidelines-derived-from-guidos-recommendations
+**Embracing Google's Python Style Guide:**
+We highly recommend adhering to Google's Python style guide for consistency. You can find detailed [naming conventions](https://google.github.io/styleguide/pyguide.html#3164-guidelines-derived-from-guidos-recommendations).
 
-## Setup
-
-We use [pyscaffold](https://pyscaffold.org/en/stable/) to boostrap new packages. Optionally you can install the [markdown](https://github.com/pyscaffold/pyscaffoldext-markdown) and [pre-commit](https://pre-commit.com/) extensions.
+## Getting Started
+We use [pyscaffold](pyscaffold.org/) to streamline the process of creating a new package. Optionally, you can enhance your workflow by installing the ***markdown*** and ***pre-commit*** extensions:
 
 ```bash
 pip install -U pyscaffold pyscaffoldext-markdown pre-commit
 ```
 
-To scaffold a new package, it's as simple as,
+Creating a new package is as simple as running the following command:
 
 ```bash
 putup <NEW_PACKAGE_NAME> --markdown --pre-commit
 ```
 
-You should now have the basic package setup for you.
+This command sets up the basic package structure.
 
-pyscaffold uses `tox`, to create isolated environments for tests, documentation and to publish the packages. This might be a good time to familiarize yourself with available [tox commands](https://pyscaffold.org/en/stable/features.html#pre-commit-hooks). **_you rarely would want to add or modify the default tox.ini file._**
+## Code Quality
 
-### Update linter, styler configuration
+### Isolated Environments and Testing
+pyscaffold employs tox to create isolated environments for testing, documentation, and package publication. Familiarize yourself with [available tox commands](https://pyscaffold.org/en/stable/features.html). You'll rarely need to modify the default `tox.ini` file.
 
-I use line length of 120, but thats a personal choice if you want to stick to the default 88.
+### Updating Linter and Styler Configuration
+We recommend a line length of 120, but feel free to modify to the default 88.
 
-#### ruff
-
-I highly recommend using [ruff](https://beta.ruff.rs/docs/).
-
-Add this to the end of the `pyproject.toml` file.
+We highly recommend using [ruff](https://beta.ruff.rs/docs/) for linting. Add the following to the end of your `pyproject.toml` file:
 
 ```toml
 [tool.ruff]
@@ -50,39 +48,34 @@ convention = "google"
 
 [tool.black]
 force-exclude = "__init__.py"
-
 ```
 
-#### pre-commit
+### Pre-commit Setup
+If you're utilizing [pre-commits](https://pre-commit.com/), an additional step might be needed. Check out our [pre-commit configuration](./pre-commit-template.yml). We have enabled [Pre-commit bot](https://pre-commit.ci/) across all BiocPy packages to ensure consistent code quality and documentation.
 
-If you are using pre-commits, you might need to run an extra step document [here](https://pyscaffold.org/en/stable/features.html#pre-commit-hooks). Checkout my [pre-commit config](./pre-commit-template.yml).
+## Sphinx for Documentation
+We use the [furo theme](https://github.com/pradyunsg/furo) across all packages for a unified look. Add furo to both `docs/requirements.txt` and update the HTML theme to use furo (in `docs/conf.py`).
 
-[Pre-commit bot](https://pre-commit.ci/) is enabled on all BiocPy packages, to bring some consistency to code quality and documentation.
+### Additional Considerations
+Utilize [intersphinx](https://www.sphinx-doc.org/en/master/usage/extensions/intersphinx.html) to link objects from other packages. For instance, to link to a pandas DataFrame object, use :py:class:\`~pandas.DataFrame\`. Make sure to update the intersphinx_mapping in `docs/conf.py`.
 
-## Sphinx
+Note that dunder methods of classes aren't automatically documented. Modify these defaults as needed in your `docs/conf.py``:
 
-I use the [furo](https://github.com/pradyunsg/furo) theme across all my packages.
+```python
+autodoc_default_options = {
+    'special-members': True,
+    'undoc-members': False,
+    'exclude-members': '__weakref__, __dict__, __str__, __module__, __init__'
+}
 
-Add furo to both `docs/requirements.txt` and update html theme to use furo (in `docs/conf.py`).
+autosummary_generate = True
+autosummary_imported_members = True
+```
 
-### Additional changes
+## Publishing on PyPI
+For most packages, the provided [GitHub workflows](./workflows/) should suffice. You can copy them to your package's .github directory. You might need to set up Twine's username and token to publish packages to PyPI.
 
-- Use intersphinx to link to objects from other packages. This should work out of the box, e.g. to link to a pandas DataFrame object, **:py:class:\`pandas.DataFrame\`**. make sure the proper libraries are added to `intersphinx_mapping` in `docs/conf.py`.
-- If classes implement dunder methods, these are not automatically documented. These are sensible defaults but modify accordingly in your `docs/conf.py` .
+If you're developing packages interfacing with C/C++ libraries and require building multiple wheels, refer to the GitHub workflows in [scranpy](https://github.com/BiocPy/scranpy). While we use cibuildwheel, we're continuously improving this workflow.
 
-  ```py
-  autodoc_default_options = {
-      'special-members': True,
-      'undoc-members': False,
-      'exclude-members': '__weakref__, __dict__, __str__, __module__, __init__'
-  }
-
-  autosummary_generate = True
-  autosummary_imported_members = True
-  ```
-
-## Publish package to PyPI
-
-For most packages, the [github workflows](./workflows/) included in this repo should suffice. Feel free to copy them to the .github directory of your package. you might have to setup twine's username and token to publish the package to PyPI.
-
-If you are developing packages that interface with C/C++ libraries and need to build many wheels, checkout the github workflows in [scranpy](htps://github.com/biocpy/scranpy). We use [cibuildwheel](https://cibuildwheel.readthedocs.io/en/stable/), but always looking to improve that workflow.
+# Have fun!
+Your contributions and packages are valuable to BiocPy, and this guide helps to meet our standards. Thank you for being a part of our developer community and more importantly Have fun!
