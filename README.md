@@ -55,7 +55,7 @@ An additional step might be needed if you are utilizing [pre-commits](https://pr
 
 We also enabled [pre-commit bot](https://pre-commit.ci/) across all BiocPy packages to automate and auto-fix code and documentation.
 
-## Sphinx for Documentation
+### Sphinx for Documentation
 We use the [furo theme](https://github.com/pradyunsg/furo) across all packages for a unified look. Add furo to both `docs/requirements.txt` and update the HTML theme to use furo (in `docs/conf.py`).
 
 ***Something on our todo list is to explore [quartodoc](https://github.com/machow/quartodoc) and/or [Jupyter Book](https://jupyterbook.org/en/stable/intro.html) for documentation and tutorials (vignette-like reproducible tutorials).***
@@ -77,6 +77,35 @@ autodoc_default_options = {
 autosummary_generate = True
 autosummary_imported_members = True
 ```
+
+### Type hints
+
+As the term suggests, these are "hints", only used to enhance the developer experience; they should not dictate how we write our code. For this reason, we prefer simple types in these hints, usually corresponding to base Python types with minimal nesting. For example, if a function is expected to operate on any arbitrary list, the basic list type hint should suffice. 
+
+```python
+def find_element(arr: list, query: int)
+    pass
+```
+
+If your function expects a list of strings, 
+
+```py
+from typing import List
+
+def find_element(arr: List[str], query: str):
+    pass
+```
+
+If your function accepts multiple types as inputs, 
+
+```py
+from typing import Union
+
+def find_element(arr: List[str], query: Union[int, str, slice]):
+    pass
+```
+
+There is no need to waste time constructing the most perfectly descriptive type for your arguments or return values; just use a simple hint with minimal nesting and put the details in the docstring instead. 
 
 ## Publishing on PyPI
 For most packages, the included [GitHub workflows](./workflows/) should suffice for most scenarios as long as you follow the instructions in this document. You might need to set up [twine](https://twine.readthedocs.io/en/stable/) to publish packages to PyPI.
