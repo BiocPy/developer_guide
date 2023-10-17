@@ -58,6 +58,24 @@ We also enabled [pre-commit bot](https://pre-commit.ci/) across all BiocPy packa
 ### Sphinx for Documentation
 We use the [furo theme](https://github.com/pradyunsg/furo) across all packages for a unified look. Add furo to both `docs/requirements.txt` and update the HTML theme to use furo (in `docs/conf.py`).
 
+In addition, we use [sphinx-autodoc-typehints](https://github.com/tox-dev/sphinx-autodoc-typehints) for a cleaner api documentation. Include this package in `docs/requirements.txt` and add it as an extension in `docs/conf.py`
+
+```python
+extensions = [
+    "sphinx.ext.autodoc",
+    "sphinx.ext.intersphinx",
+    "sphinx.ext.todo",
+    "sphinx.ext.autosummary",
+    "sphinx.ext.viewcode",
+    "sphinx.ext.coverage",
+    "sphinx.ext.doctest",
+    "sphinx.ext.ifconfig",
+    "sphinx.ext.mathjax",
+    "sphinx.ext.napoleon",
+    "sphinx_autodoc_typehints",
+]
+```
+
 ***Something on our todo list is to explore [quartodoc](https://github.com/machow/quartodoc) and/or [Jupyter Book](https://jupyterbook.org/en/stable/intro.html) for documentation and tutorials (vignette-like reproducible tutorials).***
 
 ### Additional Considerations
