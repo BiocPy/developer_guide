@@ -155,6 +155,7 @@ this should be clearly stated in the documentation but should not be treated as 
 
 Direct access to class members (via properties or `@property`) should generally be avoided,
 as it is too easy to perform modifications via one liners with the `class.property` on the left-hand-side of an assignment.
+Some of these may still be present in the classes but should be considered as deprecated if they are not already marked as such.
 
 ### Nomenclature
 Classes should use `PascalCase` and should follow Bioconductor's class names.
