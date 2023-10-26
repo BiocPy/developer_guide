@@ -125,6 +125,45 @@ def find_element(arr: List[str], query: Union[int, str, slice]):
 
 There is no need to waste time constructing the most perfectly descriptive type for your arguments or return values; just use a simple hint with minimal nesting and put the details in the docstring instead. 
 
+## Class design
+
+### General comments
+For each Bioconductor class, we aim to provide the same user experience in Python.
+In most cases, this is done by just directly re-implementing the class and its associated methods in Python.
+Occasionally, the Bioconductor implementation has some historical baggage (e.g., the storage of `rowData` in a `RangedSummarizedExperiment`, `MultiAssayExperiment` harmonization);
+developers should use their own discretion to decide whether that really needs to be replicated in Python.
+
+### Use functional discipline
+The existence of mutable types in Python means that it can be dangerous to modify complex objects.
+If a mutable object has a user-visible reference and is also a member of a larger Bioconductor object,
+a user-specified modification to that object may violate the constraints of the parent object.
+
+To mitigate these issues, we enforce a functional programming discipline in all class methods.
+By default, all methods should avoid side effects that mutate the object.
+This simplifies reasoning around the effect of methods in large complex objects.
+
+The most obvious application of this philosophy is in setter methods.
+Rather than mutating the object directly, they should return a new copy of the object with the desired modification.
+The "depth" of the copy depends on the nature of the field being set; the aim should be to avoid any modification of the contents in `self`.
+Implementations may offer an `in_place=` option to apply the modification to the original object, but this should be `False` by default.
+
+To avoid performance issues, getter methods may return mutable objects without copying 
+This assumes that their return values are read-only and will not be directly mutated.
+(Setter methods that operate via a copy are allowed.)
+In some cases; the return value of a getter method may be directly mutated, e.g., because a copy was already created in the getter;
+this should be clearly stated in the documentation but should not be treated as the default.
+
+Direct access to class members (via properties or `@property`) should generally be avoided,
+as it is too easy to perform modifications via one liners with the `class.property` on the left-hand-side of an assignment.
+
+### Nomenclature
+Classes should use `PascalCase` and should follow Bioconductor's class names.
+
+Methods should use `snake_case` and should take the form of `<verb>[_<details>]`.
+For example, `get_start()`, `set_names()` and so on.
+
+Method arguments should also use `snake_case`.
+
 ## Publishing on PyPI
 For most packages, the included [GitHub workflows](./workflows/) should suffice for most scenarios as long as you follow the instructions in this document. You might need to set up [twine](https://twine.readthedocs.io/en/stable/) to publish packages to PyPI.
 
