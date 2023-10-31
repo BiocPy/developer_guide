@@ -63,9 +63,11 @@ This assumes that their return values are read-only and will not be directly mut
 In some cases; the return value of a getter method may be directly mutated, e.g., because a copy was already created in the getter;
 this should be clearly stated in the documentation but should not be treated as the default.
 
+#### Property based accessors and setters
 Direct access to class members (via properties or `@property`) should generally be avoided,
 as it is too easy to perform modifications via one liners with the `class.property` on the left-hand-side of an assignment.
-Some of these may still be present in the classes but should be considered as deprecated if they are not already marked as such.
+
+***The default assumption is property based setters will mutate the object in-place.***
 
 ## Code Quality
 
