@@ -98,7 +98,7 @@ def find_element(arr: List[str], query: Union[int, str, slice]):
     pass
 ```
 
-There is no need to waste time constructing the most perfectly descriptive type for your arguments or return values; just use a simple hint with minimal nesting and put the details in the docstring instead.
+There is no need to waste time constructing the most perfectly descriptive type for your arguments or return values; just use a simple hint with minimal nesting and put the details in the docstring instead. This [reddit post](https://www.reddit.com/r/Python/comments/10zdidm/why_type_hinting_sucks/) perfectly sums up some of these ideas.
 
 # Have fun!
 
